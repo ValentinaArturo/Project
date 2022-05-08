@@ -1,5 +1,4 @@
 import 'package:chatapp/helper/constants.dart';
-import 'package:chatapp/models/user.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:chatapp/views/chat.dart';
 import 'package:chatapp/widget/widget.dart';
@@ -40,11 +39,11 @@ class _SearchState extends State<Search> {
   Widget userList(){
     return haveUserSearched ? ListView.builder(
       shrinkWrap: true,
-      itemCount: searchResultSnapshot.documents.length,
+      itemCount: searchResultSnapshot.docs.length,
         itemBuilder: (context, index){
         return userTile(
-          searchResultSnapshot.documents[index].data["userName"],
-          searchResultSnapshot.documents[index].data["userEmail"],
+          searchResultSnapshot.docs[index]["userName"],
+          searchResultSnapshot.docs[index]["userEmail"],
         );
         }) : Container();
   }

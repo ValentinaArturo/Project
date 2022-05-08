@@ -3,7 +3,6 @@ import 'package:chatapp/helper/theme.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:chatapp/views/chatrooms.dart';
-import 'package:chatapp/views/forgot_password.dart';
 import 'package:chatapp/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -35,20 +34,27 @@ class _SignInState extends State<SignIn> {
 
       await authService
           .signInWithEmailAndPassword(
-              emailEditingController.text, passwordEditingController.text)
+        emailEditingController.text,
+        passwordEditingController.text,
+      )
           .then((result) async {
-        if (result != null)  {
-          QuerySnapshot userInfoSnapshot =
-              await DatabaseMethods().getUserInfo(emailEditingController.text);
+        if (result != null) {
+          QuerySnapshot userInfoSnapshot = await DatabaseMethods().getUserInfo(
+            emailEditingController.text,
+          );
 
           HelperFunctions.saveUserLoggedInSharedPreference(true);
           HelperFunctions.saveUserNameSharedPreference(
-              userInfoSnapshot.documents[0].data["userName"]);
+              userInfoSnapshot.docs[0]["userName"]);
           HelperFunctions.saveUserEmailSharedPreference(
-              userInfoSnapshot.documents[0].data["userEmail"]);
+              userInfoSnapshot.docs[0]["userEmail"]);
 
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatRoom(),
+            ),
+          );
         } else {
           setState(() {
             isLoading = false;
@@ -65,10 +71,14 @@ class _SignInState extends State<SignIn> {
       appBar: appBarMain(context),
       body: isLoading
           ? Container(
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             )
           : Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
               child: Column(
                 children: [
                   Spacer(),
@@ -105,41 +115,22 @@ class _SignInState extends State<SignIn> {
                   SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ForgotPassword()));
-                        },
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: Text(
-                              "Forgot Password?",
-                              style: simpleTextStyle(),
-                            )),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
                   GestureDetector(
                     onTap: () {
                       signIn();
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                      ),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(
+                            30,
+                          ),
                           gradient: LinearGradient(
                             colors: [
-                              const Color(0xff007EF4),
-                              const Color(0xff2A75BC)
+                              CustomTheme.colorAccent,
+                              CustomTheme.textColor,
                             ],
                           )),
                       width: MediaQuery.of(context).size.width,
@@ -148,22 +139,6 @@ class _SignInState extends State<SignIn> {
                         style: biggerTextStyle(),
                         textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white),
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      "Sign In with Google",
-                      style:
-                          TextStyle(fontSize: 17, color: CustomTheme.textColor),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                   SizedBox(
@@ -183,9 +158,10 @@ class _SignInState extends State<SignIn> {
                         child: Text(
                           "Register now",
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              decoration: TextDecoration.underline),
+                            color: Colors.white,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     ],
