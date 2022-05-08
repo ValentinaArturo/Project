@@ -27,7 +27,7 @@ class DatabaseMethods {
         .get();
   }
 
-  Future<bool> addChatRoom(chatRoom, chatRoomId) {
+  Future<void> addChatRoom(chatRoom, chatRoomId) {
     return FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
